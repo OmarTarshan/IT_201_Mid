@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>تعلّم HTML وCSS خطوة بخطوة</title>
+<style>
+:root{--bg:#f3f5f8;--cd:#fff;--tx:#17202e;--mu:#5b6778;--ac:#0e7490;--ac2:#f59e0b;--bd:#d9e0ea;--ok:#15803d;--no:#b91c1c;--cb:#101a2b;--ct:#dbe7f5;--wn:#fff4d6;--wt:#6b4300;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg:#0c121c;--cd:#141d2b;--tx:#e4ebf5;--mu:#93a1b6;--ac:#38bdf8;--bd:#26344a;--ok:#4ade80;--no:#f87171;--cb:#070c14;--wn:#3a2c0a;--wt:#fcd98a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.9 "Segoe UI",Tahoma,"Noto Naskh Arabic",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--cd);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--cd);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px;padding:10px 16px}
+header h1{font-size:1.05rem;margin:0;flex:1}
+.bar{width:140px;height:10px;background:var(--bd);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ac2);transition:width .4s}
+#pc{font-size:.85rem;color:var(--mu);min-width:38px}
+button{font:inherit;cursor:pointer;border:1px solid var(--ac);background:var(--ac);color:#fff;border-radius:8px;padding:5px 14px}
+button.g{background:none;color:var(--ac)}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--ac2);outline-offset:2px}
+#mb{display:none}
+.w{display:grid;grid-template-columns:280px 1fr;max-width:1250px;margin:auto}
+nav{padding:14px;border-inline-end:1px solid var(--bd);height:calc(100vh - 60px);position:sticky;top:60px;overflow:auto}
+nav h4{margin:14px 6px 4px;color:var(--mu);font-size:.85rem}
+nav a{display:flex;gap:8px;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:.95rem}
+nav a:hover{background:var(--bd)}
+nav a.on{background:var(--ac);color:#fff}
+nav a b{margin-inline-start:auto}
+main{padding:22px clamp(14px,3vw,36px) 60px;min-width:0;max-width:980px}
+h2{font-size:1.6rem;margin:.2em 0 .5em}
+h3{margin:1.4em 0 .4em;font-size:1.1rem;border-inline-start:4px solid var(--ac2);padding-inline-start:10px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:6px 18px}
+code{font-family:Consolas,"Courier New",monospace;background:var(--bd);padding:1px 6px;border-radius:5px;direction:ltr;unicode-bidi:embed;font-size:.9em}
+pre{direction:ltr;text-align:left;background:var(--cb);color:var(--ct);padding:14px;border-radius:10px;overflow-x:auto;font:14px/1.6 Consolas,"Courier New",monospace;margin:8px 0}
+.fix{background:var(--wn);color:var(--wt);border-radius:10px;padding:8px 16px;margin-top:14px}
+.ed{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+textarea{width:100%;min-height:230px;direction:ltr;text-align:left;background:var(--cb);color:var(--ct);border:1px solid var(--bd);border-radius:10px;padding:12px;font:14px/1.6 Consolas,"Courier New",monospace;resize:vertical}
+iframe{width:100%;min-height:230px;height:100%;background:#fff;border:1px solid var(--bd);border-radius:10px}
+.nv{display:flex;justify-content:space-between;margin-top:26px}
+.q{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:10px 18px;margin:12px 0}
+.q label{display:block;padding:4px 8px;border-radius:8px;cursor:pointer}
+.q label.ok{background:color-mix(in srgb,var(--ok) 22%,transparent)}
+.q label.no{background:color-mix(in srgb,var(--no) 22%,transparent)}
+#rs{margin-inline-start:10px;font-weight:600}
+@media(max-width:820px){#mb{display:inline-block}.w{display:block}.ed{grid-template-columns:1fr}.bar{width:70px}
+nav{display:none;position:fixed;inset:110px 0 0 0;background:var(--bg);z-index:8;height:auto}nav.open{display:block}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><button id="mb" class="g" aria-label="القائمة">☰ الدروس</button><h1>تعلّم HTML وCSS</h1><div class="bar"><i id="pb"></i></div><span id="pc">0%</span><button id="th" class="g" aria-label="الوضع الداكن">◐</button></header>
+<div class="w"><nav id="nv"></nav><main id="mn"></main></div>
+<script>
+const L=[
+{n:"هيكل صفحة HTML",
+e:`<p><b>HTML</b> (HyperText Markup Language) هي لغة الترميز القياسية لصفحات الويب. هي تصف <b>بنية</b> الصفحة: ما العنوان؟ وما الفقرة؟ وما الجدول؟ المتصفح لا يعرض الوسوم نفسها، بل يستخدمها ليعرف كيف يرسم المحتوى.</p>
+<p>العنصر يُكتب غالبًا بوسمين: <code>&lt;p&gt;</code> وسم البداية، و<code>&lt;/p&gt;</code> وسم النهاية (فيه شرطة مائلة). بعض العناصر فارغة (Void) بلا محتوى ولا وسم إغلاق مثل <code>&lt;br&gt;</code> و<code>&lt;hr&gt;</code> و<code>&lt;img&gt;</code>.</p>
+<p>أجزاء الصفحة: <code>&lt;!DOCTYPE html&gt;</code> يعلن أن الصفحة HTML5 وتُكتب مرة واحدة في أول الملف، <code>&lt;html&gt;</code> الجذر، <code>&lt;head&gt;</code> معلومات غير مرئية (العنوان…)، <code>&lt;body&gt;</code> المحتوى المرئي. وHTML غير حساس لحالة الأحرف، لكن الأفضل كتابة الوسوم بحروف صغيرة.</p>`,
+c:`<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>عنوان التبويب</title>
+</head>
+<body>
+  <h1>عنواني الأول</h1>
+  <p>فقرتي الأولى.</p>
+</body>
+</html>`,
+f:`HTML5 صدر رسميًا عام 2014، لكن HTML اليوم «معيار حي» (Living Standard) تطوّره WHATWG بلا أرقام إصدارات جديدة. كما أن كتابة <code>&lt;br /&gt;</code> مسموحة لكن الشرطة اختيارية في HTML.`,
+t:`أنشئ عنوانًا <code>h1</code> وتحته فقرة <code>p</code>، كل منهما بنص حقيقي.`,s:`<h1></h1>\n`,k:["<h1[^>]*>\\s*[^<\\s]","<p[^>]*>\\s*[^<\\s]"]},
+
+{n:"العناوين والنصوص والاقتباس",
+e:`<p><code>h1</code> إلى <code>h6</code> للعناوين (h1 الأهم). استخدم h1 واحدًا للصفحة، ولا تستخدم العناوين لتكبير الخط فقط. <code>p</code> فقرة، <code>br</code> سطر جديد، <code>hr</code> فاصل موضوعي. المتصفح <b>يتجاهل</b> المسافات والأسطر الزائدة في الكود، أما <code>pre</code> فيحافظ عليها بخط ثابت العرض.</p>
+<p><b>تنسيق بمعنى:</b> <code>strong</code> مهم، <code>em</code> تأكيد، <code>mark</code> تمييز، <code>small</code> نص صغير، <code>del</code> محذوف، <code>ins</code> مُضاف، <code>sub</code> منخفض، <code>sup</code> مرتفع.</p>
+<p><b>اقتباس:</b> <code>q</code> اقتباس قصير (يضيف المتصفح علامات الاقتباس)، <code>blockquote</code> اقتباس طويل، <code>abbr</code> اختصار مع <code>title</code> لشرحه، <code>cite</code> عنوان عمل، <code>address</code> معلومات التواصل مع كاتب الصفحة، <code>bdo</code> يفرض اتجاه الكتابة.</p>`,
+c:`<h1>عنوان</h1>
+<p>H<sub>2</sub>O و X<sup>2</sup></p>
+<p>سعر الجهاز <del>48000</del> <ins>45000</ins></p>
+<p>تأسست <abbr title="World Health Organization">WHO</abbr> عام 1948.</p>
+<p><q>اقتباس قصير</q></p>
+<blockquote>اقتباس طويل من مصدر آخر.</blockquote>
+<pre>
+  سطر 1
+     سطر 2
+</pre>`,
+f:`الوسوم <code>big</code> و<code>tt</code> و<code>acronym</code> قديمة (Obsolete) وغير مسموحة: استخدم CSS لتكبير الخط، و<code>abbr</code> بدل acronym. كذلك <code>b</code> و<code>i</code> ليستا «للتنسيق فقط»: b لفت انتباه بصري، i نص بصوت مختلف؛ وللأهمية استخدم strong وem. وu تُستعمل لتعليم نص (كخطأ إملائي) فلا تضعها على نص عادي فيشبه رابطًا. وcite لعنوان العمل وليس لاسم الشخص.`,
+t:`اكتب جملة فيها <code>strong</code> واختصارًا بـ <code>abbr</code> له <code>title</code>.`,s:`<p></p>\n`,k:["<strong","<abbr[^>]*title="]},
+
+{n:"الخصائص Attributes",
+e:`<p>الخصائص تعطي معلومات إضافية عن العنصر. تُكتب دائمًا في <b>وسم البداية</b> على شكل <code>name="value"</code>.</p>
+<p>أشهرها: <code>href</code> وجهة الرابط، <code>src</code> مصدر الصورة، <code>alt</code> نص بديل (يقرؤه قارئ الشاشة ويظهر إذا فشل تحميل الصورة)، <code>width</code>/<code>height</code>، <code>style</code> لتنسيق سريع، <code>lang</code> على وسم html لتحديد اللغة (مهم لقارئات الشاشة ومحركات البحث)، <code>title</code> تلميح يظهر عند تمرير الماوس.</p>
+<p>الأفضل: حروف صغيرة للأسماء، وعلامات اقتباس دائمًا. القيمة التي فيها مسافة بلا اقتباس تتعطل: <code>title=About me</code> سيُقرأ «About» فقط.</p>`,
+c:`<html lang="ar">
+<p title="أنا تلميح" style="color:red">فقرة حمراء</p>
+<p title='قال "مرحبا"'>اقتباس مزدوج داخل مفرد</p>
+<img src="a.jpg" alt="وصف الصورة" width="300" height="200">`,
+f:`الملف يقترح استخدام style بدل width/height للصور. الأحدث: ضع width وheight كخصائص (تحجز المساحة وتمنع قفز الصفحة أثناء التحميل) واترك التجاوب لـ CSS مثل <code>max-width:100%; height:auto</code>. وكلمتا UPCISS وJitendra في الملف بقايا من مصدر آخر فتجاهلهما.`,
+t:`اكتب <code>&lt;html lang="ar"&gt;</code> ثم فقرة بخاصيتي <code>title</code> و<code>style</code> (لون نص أحمر).`,s:`<html lang="">\n<p>جرّب</p>\n`,k:["lang=\"[a-z]","<p[^>]*title=","<p[^>]*style=\"[^\"]*color\\s*:"]},
+
+{n:"الروابط Links",
+e:`<p>الرابط يُصنع بوسم <code>&lt;a&gt;</code> وخاصية <code>href</code> للوجهة. الرابط المطلق يحمل العنوان كاملًا (<code>https://…</code>) والنسبي يشير لصفحة في نفس الموقع. الرابط قد يكون نصًا أو صورة أو أي عنصر.</p>
+<p><code>target</code> يحدد مكان الفتح: <code>_self</code> (افتراضي) نفس النافذة، <code>_blank</code> تبويب جديد، <code>_parent</code>، <code>_top</code>، أو اسم إطار.</p>
+<p><b>العلامات المرجعية (Bookmarks):</b> أعطِ عنصرًا <code>id</code>، ثم اربط إليه بـ <code>href="#id"</code> فتنزلق الصفحة إليه. ألوان الروابط الافتراضية: أزرق (لم يُزَر)، بنفسجي (زِير)، أحمر (نشط)، ويمكن تغييرها بـ CSS بالترتيب: <code>a:link</code> ثم <code>a:visited</code> ثم <code>a:hover</code> ثم <code>a:active</code>.</p>`,
+c:`<a href="https://example.com" target="_blank" rel="noopener">موقع خارجي</a>
+<a href="about.html">صفحة داخلية</a>
+<h2 id="c4">الفصل 4</h2>
+<a href="#c4">اذهب للفصل 4</a>
+<a href="https://example.com"><img src="logo.png" alt="الشعار"></a>`,
+f:`عند استخدام <code>target="_blank"</code> أضف <code>rel="noopener"</code> للأمان (المتصفحات الحديثة تفعله تلقائيًا لكن الإضافة عادة جيدة). وعبارة <code>border:0</code> للصور داخل الروابط كانت لمتصفح IE9 وأقدم ولم تعد لازمة.`,
+t:`أنشئ رابطًا يفتح في تبويب جديد، وعنوانًا له <code>id</code> مع رابط <code>#</code> إليه.`,s:`<a href="">رابط</a>\n<h2>الهدف</h2>\n`,k:["<a[^>]+href=\"https?://","target=\"_blank\"","<a[^>]+href=\"#\\w+","<h2[^>]+id="]},
+
+{n:"الصور وخرائط الصور",
+e:`<p>الصورة بوسم <code>&lt;img&gt;</code> وهو وسم فارغ: <code>src</code> مسار الصورة و<code>alt</code> وصفها. <code>alt</code> مطلوب لصحة الصفحة (يُترك فارغًا <code>alt=""</code> فقط للصور الزخرفية). اجعل الوصف يشرح محتوى الصورة.</p>
+<p><b>خريطة الصورة:</b> صورة بمناطق قابلة للنقر. اربط <code>usemap="#اسم"</code> في الصورة مع <code>&lt;map name="اسم"&gt;</code> التي تحوي وسوم <code>&lt;area&gt;</code> بأشكال <code>rect</code> أو <code>circle</code> وإحداثيات <code>coords</code>.</p>
+<p>لجعل الصورة تلتف حوله النص استخدم CSS <code>float:left</code> أو <code>right</code>.</p>`,
+c:`<img src="chania.jpg" alt="زهور في خانيا" width="400" height="300">
+
+<img src="work.jpg" alt="مكتب" usemap="#wm">
+<map name="wm">
+  <area shape="rect" coords="34,44,270,350" alt="حاسوب" href="pc.html">
+  <area shape="circle" coords="337,300,44" alt="قهوة" href="coffee.html">
+</map>`,
+f:`عند الجمع بين <code>img{width:100%}</code> في CSS وwidth="128" في الوسم، تتغلب قاعدة CSS. الـ float مقبول للالتفاف حول النص، أما التخطيط العام فاستخدم Flexbox أو Grid.`,
+t:`أضف صورة (SVG مضمّنة) بنص <code>alt</code> حقيقي وعرض <code>width</code>.`,
+s:`<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Crect width='120' height='80' fill='%2338bdf8'/%3E%3C/svg%3E" alt="">`,k:["alt=\"[^\"]+\"","width="]},
+
+{n:"القوائم Lists",
+e:`<p><code>&lt;ul&gt;</code> قائمة غير مرتبة (نقاط)، و<code>&lt;ol&gt;</code> قائمة مرتبة (أرقام)، وكل عنصر بوسم <code>&lt;li&gt;</code>. في <code>ol</code> الخاصية <code>type</code> تغيّر الترقيم (1, A, a, I, i) و<code>start</code> تحدد رقم البداية. في CSS الخاصية <code>list-style-type</code> تغيّر الشكل (disc, circle, square, none).</p>
+<p>قوائم الوصف: <code>dl</code> للقائمة، <code>dt</code> للمصطلح، <code>dd</code> للشرح. ويمكن تداخل القوائم بوضع قائمة داخل <code>li</code>.</p>`,
+c:`<ul>
+  <li>قهوة</li>
+  <li>شاي
+    <ul><li>أسود</li><li>أخضر</li></ul>
+  </li>
+</ul>
+<ol type="A" start="3"><li>ج</li><li>د</li></ol>
+<dl><dt>قهوة</dt><dd>مشروب ساخن</dd></dl>`,
+f:`في مثال الملف كُتبت شرطة داخل <code>dd</code> ("- black hot drink") وهي غير لازمة. وللقوائم الأفقية (قوائم التنقل) الأفضل اليوم <code>display:flex</code> داخل <code>&lt;nav&gt;</code> بدل <code>float</code>.`,
+t:`أنشئ قائمة مرقمة من 3 عناصر تبدأ من الرقم 5.`,s:`<ol>\n</ol>`,k:["<ol[^>]*start=\"5\"","(<li[\\s\\S]*?){3}"]},
+
+{n:"الجداول Tables",
+e:`<p><code>table</code> الجدول، <code>tr</code> صف، <code>th</code> خلية عنوان (غامقة وفي الوسط افتراضيًا)، <code>td</code> خلية بيانات. بلا CSS لا توجد حدود ولا حشوة: استخدم <code>border</code> على table وth وtd، و<code>border-collapse:collapse</code> لدمج الحدود، و<code>padding</code> لمسافة داخل الخلية، و<code>text-align:left</code> لمحاذاة العناوين.</p>
+<p>دمج الخلايا: <code>colspan</code> لعدة أعمدة و<code>rowspan</code> لعدة صفوف. <code>caption</code> يضيف عنوانًا ويجب أن يكون <b>أول</b> عنصر داخل table. و<code>border-spacing</code> لا يعمل مع الحدود المدموجة.</p>`,
+c:`<table style="border-collapse:collapse">
+  <caption>الأعمار</caption>
+  <tr><th>الاسم</th><th>العمر</th></tr>
+  <tr><td>سارة</td><td>30</td></tr>
+  <tr><th colspan="2">المجموع</th></tr>
+</table>
+<style>th,td{border:1px solid #888;padding:8px}</style>`,
+f:`لا تستخدم الجداول لتخطيط الصفحة، بل لعرض بيانات فقط. وللوصول الأفضل استخدم <code>thead</code> و<code>tbody</code> و<code>scope="col"</code> على th.`,
+t:`أنشئ جدولًا بـ <code>caption</code> وصف عناوين <code>th</code> وصف بيانات <code>td</code>.`,s:`<table>\n</table>\n<style>th,td{border:1px solid #888;padding:8px}</style>`,k:["<table[^>]*>\\s*<caption","<th","<td"]},
+
+{n:"كتل وأسطر، class وid",
+e:`<p>العنصر الكتلي (Block) يبدأ سطرًا جديدًا ويأخذ العرض كله مثل <code>div</code> و<code>p</code> و<code>h1</code>. العنصر السطري (Inline) يأخذ مساحته فقط ولا يكسر السطر مثل <code>span</code> و<code>a</code> و<code>strong</code>. <code>div</code> حاوية لكتل المحتوى و<code>span</code> حاوية لجزء من نص.</p>
+<p><b>class</b> يمكن أن يتكرر على عدة عناصر (يُختار في CSS بنقطة <code>.city</code>) ويمكن للعنصر أن يحمل عدة أصناف مفصولة بمسافة. <b>id</b> فريد في الصفحة (يُختار بـ <code>#myHeader</code>) ويُستخدم أيضًا للعلامات المرجعية وفي JavaScript عبر <code>getElementById</code>. القيمتان حساستان لحالة الأحرف ولا تحويان مسافات.</p>`,
+c:`<style>
+.city{background:tomato;color:#fff;padding:10px;margin:8px}
+#top{background:lightblue;text-align:center;padding:20px}
+</style>
+<h1 id="top">مدني</h1>
+<div class="city"><h2>لندن</h2><p>عاصمة إنجلترا</p></div>
+<p>هذا <span style="color:red">مهم</span> جدًا</p>`,
+f:`قائمة الملف للعناصر الكتلية ليست دقيقة تمامًا: <code>video</code> و<code>canvas</code> سطريان افتراضيًا، و<code>li</code> قيمته <code>list-item</code>، و<code>button</code> و<code>input</code> من نوع inline-block. الأدق أن تعدّل <code>display</code> في CSS.`,
+t:`أنشئ صنفًا <code>.note</code> بخلفية صفراء، وطبّقه على عنصرين مختلفين.`,s:`<style>\n\n</style>\n<p></p>\n<div></div>`,k:["\\.note\\s*\\{[^}]*background","class=\"note\"[\\s\\S]*class=\"note\""]},
+
+{n:"الألوان في CSS",
+e:`<p>يمكن تحديد اللون بأربع طرق: <b>الاسم</b> مثل <code>tomato</code>، <b>RGB</b> مثل <code>rgb(255,99,71)</code> (كل قيمة 0–255)، <b>HEX</b> مثل <code>#ff6347</code> (قيم 00–ff)، <b>HSL</b> مثل <code>hsl(9,100%,64%)</code> (الصبغة 0–360، التشبّع %، الإضاءة %: 0% أسود و100% أبيض).</p>
+<p>للشفافية: <code>rgba(…, 0.5)</code> و<code>hsla(…, 0.5)</code> حيث 0 شفاف تمامًا و1 معتم. الخصائص: <code>color</code> لون النص، <code>background-color</code> الخلفية، <code>border</code> الحد.</p>`,
+c:`<h1 style="color:tomato">اسم</h1>
+<h1 style="color:rgb(60,179,113)">RGB</h1>
+<h1 style="color:#6a5acd">HEX</h1>
+<h1 style="color:hsl(39,100%,50%)">HSL</h1>
+<p style="background:rgba(255,99,71,.5);border:2px solid DodgerBlue">شفاف</p>`,
+f:`في CSS الحديثة تقبل <code>rgb()</code> و<code>hsl()</code> قيمة شفافية أيضًا (<code>rgb(255 99 71 / 50%)</code>) والـ HEX يدعم 8 خانات (<code>#ff634780</code>). والصيغ القديمة rgba/hsla ما زالت تعمل.`,
+t:`اجعل خلفية فقرة بلون <code>hsl</code> ونصها بلون <code>#</code> HEX وحدها حد <code>border</code> ملوّن.`,s:`<p style="">لوّنّي</p>`,k:["hsl\\(","#[0-9a-f]{3,6}","border\\s*:"]},
+
+{n:"إضافة CSS والخطوط والمسافات",
+e:`<p>CSS (Cascading Style Sheets) تصف طريقة عرض العناصر. ثلاث طرق لإضافتها: <b>Inline</b> بخاصية <code>style</code> لعنصر واحد، <b>Internal</b> داخل <code>&lt;style&gt;</code> في head لصفحة واحدة، <b>External</b> ملف <code>.css</code> مرتبط بـ <code>&lt;link rel="stylesheet" href="styles.css"&gt;</code> ليتحكم في موقع كامل. الخارجي هو الأفضل عمليًا.</p>
+<p>القاعدة: <code>selector { property: value; }</code>. خصائص شائعة: <code>font-family</code> الخط، <code>font-size</code> الحجم، <code>text-align</code> المحاذاة، <code>border</code> الحد، <code>padding</code> مسافة داخل الحد، <code>margin</code> مسافة خارج الحد.</p>`,
+c:`<style>
+h1 { color: blue; font-family: Verdana, sans-serif; font-size: 200%; }
+p  { border: 1px solid powderblue; padding: 20px; margin: 30px; }
+</style>
+<h1>عنوان</h1>
+<p>فقرة بحد ومسافات</p>`,
+f:`اكتب أسماء الخطوط بقائمة بدائل: <code>font-family: Verdana, sans-serif</code> لا اسمًا مفردًا. وقاعدة الملف <code>font-family:courier</code> الأفضل <code>"Courier New", monospace</code>. والـ Inline مقبول للتجارب السريعة فقط لأنه يصعّب الصيانة.`,
+t:`باستخدام <code>&lt;style&gt;</code> اجعل الفقرات خطها أحمر، بحد، <code>padding</code> و<code>margin</code>.`,s:`<style>\np {\n}\n</style>\n<p>اختبار</p>`,k:["p\\s*\\{[^}]*color","p\\s*\\{[^}]*border","p\\s*\\{[^}]*padding","p\\s*\\{[^}]*margin"]},
+
+{n:"المسارات وiframe وعنصر head",
+e:`<p><b>مسارات الملفات:</b> المطلق <code>https://site.com/a.jpg</code>، نسبة للجذر <code>/images/a.jpg</code>، نسبي لمجلد الصفحة <code>images/a.jpg</code>، ومجلد أعلى <code>../a.jpg</code>.</p>
+<p><b>iframe</b> يعرض صفحة داخل صفحة: <code>src</code> العنوان، و<code>width</code>/<code>height</code>، والحد يُزال بـ CSS <code>border:none</code>. إن أعطيته <code>name</code> فيمكن لرابط <code>target</code> فتح الصفحة داخله.</p>
+<p><b>head</b> يحوي بيانات وصفية غير مرئية: <code>title</code> (مطلوب)، <code>meta charset="UTF-8"</code>، <code>meta name="description"</code>، <code>meta name="viewport" content="width=device-width, initial-scale=1.0"</code> (ضروري للجوال)، <code>link</code> للأنماط، <code>style</code>، <code>script</code>، <code>base</code>.</p>`,
+c:`<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="وصف الصفحة">
+  <title>صفحتي</title>
+</head>
+<body>
+  <iframe src="page.html" title="مثال" width="300" height="150" style="border:none"></iframe>
+</body>
+</html>`,
+f:`محركات البحث (مثل Google) تتجاهل <code>meta keywords</code> اليوم، و<code>http-equiv="refresh"</code> غير مفضل لإضرارها بإمكانية الوصول. أضف دائمًا <code>title</code> لعناصر iframe. والخاصية القديمة frameborder غير مسموحة. وقد تمنع بعض المواقع عرضها داخل iframe. وفي مثال الملف <code>function myFunction {</code> ينقصه القوسان: الصحيح <code>function myFunction() {</code>.`,
+t:`اكتب head فيه <code>charset</code> و<code>viewport</code> و<code>title</code>.`,s:`<!DOCTYPE html>\n<html lang="ar">\n<head>\n\n</head>\n<body>صفحة</body>\n</html>`,k:["charset=","name=\"viewport\"","<title>[^<]+</title>"]},
+
+{n:"الرموز Symbols والنماذج Forms",
+e:`<p>الرموز غير الموجودة في لوحة المفاتيح تُكتب بـ <b>اسم</b> الكيان <code>&amp;euro;</code> أو <b>رقمه</b> <code>&amp;#8364;</code> أو رقمه السداسي <code>&amp;#x20AC;</code> فتظهر €. أمثلة: <code>&amp;copy;</code> ©، <code>&amp;lt;</code> &lt;، <code>&amp;gt;</code> &gt;، <code>&amp;nbsp;</code> مسافة لا تنكسر، وأسهم <code>&amp;rarr;</code>.</p>
+<p><b>النماذج:</b> (ذُكرت في فهرس الملف لكن صفحاتها لم تكن ضمن المرفق، فأضفت مقدمة مختصرة). <code>form</code> يحوي حقولًا: <code>input</code> بنوع <code>type</code> (text, email, password, checkbox…)، و<code>label</code> مربوط بالحقل عبر <code>for</code> و<code>id</code>، و<code>button</code> للإرسال. من خصائص الحقول: <code>name</code>, <code>required</code>, <code>placeholder</code>, <code>value</code>.</p>`,
+c:`<p>&copy; 2026 &mdash; السعر 10 &euro; &rarr;</p>
+<form>
+  <label for="em">البريد</label>
+  <input id="em" type="email" name="email" placeholder="you@mail.com" required>
+  <button type="submit">إرسال</button>
+</form>`,
+f:`إذا كانت الصفحة بترميز UTF-8 يمكنك كتابة الرمز مباشرة (€ أو ©) دون كيان. الكيانات ضرورية خاصة لـ <code>&amp;lt;</code> و<code>&amp;amp;</code> حتى لا تُقرأ كوسوم.`,
+t:`أنشئ نموذجًا فيه <code>label</code> مرتبط بحقل <code>input</code> وزر <code>button</code>، واكتب رمز حقوق النشر <code>&amp;copy;</code>.`,s:`<form>\n\n</form>\n<p></p>`,k:["<label[^>]+for=\"(\\w+)\"[\\s\\S]*<input[^>]+id=\"\\1\"","<button","&copy;"]}
+];
+const Q=[
+[["أي وسم هو جذر صفحة HTML؟",["head","html","body"],1],["أي خاصية تعطي نصًا بديلًا للصورة؟",["src","title","alt"],2],["أي عنصر مناسب للنص المهم دلاليًا؟",["strong","big","u"],0]],
+[["أي عنصر يضع عنوانًا للجدول ويجب أن يكون أول عنصر فيه؟",["caption","th","title"],0],["للانتقال لجزء من نفس الصفحة نستخدم؟",["target=\"_top\"","href=\"#id\" مع id على الهدف","alt=\"id\""],1],["أي عنصر من العناصر الكتلية (Block)؟",["a","span","div"],2]],
+[["ماذا يمثل rgb(255,0,0)؟",["أحمر","أخضر","أزرق"],0],["المسار ../a.jpg يعني؟",["نفس المجلد","المجلد الأعلى بمستوى واحد","جذر الموقع"],1],["كيف نختار عناصر class=\"city\" في CSS؟",["city {}","#city {}",".city {}"],2]]
+];
+const I=[];L.forEach((l,i)=>{I.push({k:"l",i});if(i%4==3)I.push({k:"q",u:(i-3)/4})});
+const $=s=>document.querySelector(s);
+let S={d:{},q:{},c:0,t:""};
+try{Object.assign(S,JSON.parse(localStorage.getItem("lh2")||"{}"))}catch(e){}
+const sv=()=>{try{localStorage.setItem("lh2",JSON.stringify(S))}catch(e){}};
+function theme(){if(!S.t)S.t=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.dataset.theme=S.t}
+$("#th").onclick=()=>{S.t=S.t=="dark"?"light":"dark";theme();sv()};
+$("#mb").onclick=()=>$("#nv").classList.toggle("open");
+function prog(){const n=Object.keys(S.d).length+Object.keys(S.q).length,p=Math.round(n/I.length*100);$("#pb").style.width=p+"%";$("#pc").textContent=p+"%"}
+function nav(){const u=["الوحدة 1: الأساسيات","الوحدة 2: المحتوى","الوحدة 3: CSS والمزيد"];let h="";I.forEach((x,j)=>{if(x.k=="l"&&x.i%4==0)h+="<h4>"+u[x.i/4]+"</h4>";const ok=x.k=="l"?S.d[x.i]:S.q[x.u]!=null;h+=`<a data-j="${j}" class="${j==S.c?"on":""}"><span>${x.k=="l"?(x.i+1)+". "+L[x.i].n:"📝 اختبار الوحدة "+(x.u+1)}</span><b>${ok?"✓":""}</b></a>`});$("#nv").innerHTML=h;$("#nv").querySelectorAll("a").forEach(a=>a.onclick=()=>go(+a.dataset.j))}
+function go(j){S.c=j;sv();nav();prog();$("#nv").classList.remove("open");scrollTo(0,0);const x=I[j];x.k=="l"?lesson(x.i):quiz(x.u);const m=$("#mn"),n=document.createElement("div");n.className="nv";n.innerHTML=`<button class="g" ${j?"":"disabled"} id="pv">السابق ›</button><button ${j<I.length-1?"":"disabled"} id="nx">‹ التالي</button>`;m.append(n);$("#pv").onclick=()=>go(j-1);$("#nx").onclick=()=>go(j+1)}
+function lesson(i){const l=L[i],m=$("#mn");
+m.innerHTML=`<h2>${i+1}. ${l.n}</h2><div class="card">${l.e}</div><h3>مثال</h3><pre></pre><button class="g" id="cp">انقل المثال إلى المحرر</button>${l.f?`<div class="fix"><b>تصحيح وتحديث:</b> ${l.f}</div>`:""}<h3>تطبيق عملي</h3><p>${l.t}</p><div class="ed"><textarea spellcheck="false" aria-label="محرر الكود"></textarea><iframe sandbox="" title="معاينة"></iframe></div><p><button id="ck">تحقق من الحل</button><span id="rs"></span> ${S.d[i]?"✓ مكتمل":""}</p>`;
+m.querySelector("pre").textContent=l.c;
+const ta=m.querySelector("textarea"),fr=m.querySelector("iframe");
+const run=()=>{const v=ta.value;fr.srcdoc=/<html/i.test(v)?v:'<meta charset="utf-8"><body style="font-family:sans-serif;direction:rtl">'+v};
+ta.value=l.s;ta.oninput=run;run();
+$("#cp").onclick=()=>{ta.value=l.c;run()};
+$("#ck").onclick=()=>{const v=ta.value,bad=l.k.filter(r=>!new RegExp(r,"i").test(v)).length,r=$("#rs");
+if(!bad){r.textContent="✅ أحسنت، الحل صحيح";r.style.color="var(--ok)";S.d[i]=1;sv();prog();nav()}else{r.textContent="❌ ينقصك "+bad+" من "+l.k.length+" متطلبات، راجع المثال وحاول";r.style.color="var(--no)"}}}
+function quiz(u){const m=$("#mn");let h=`<h2>اختبار الوحدة ${u+1}</h2>`;
+Q[u].forEach((q,a)=>{h+=`<div class="q"><p><b>${a+1}) ${q[0]}</b></p>`+q[1].map((o,b)=>`<label><input type="radio" name="q${a}" value="${b}"> <span>${o}</span></label>`).join("")+"</div>"});
+h+=`<button id="sq">صحّح الإجابات</button> <b id="rs"></b>${S.q[u]!=null?`<p>أفضل نتيجة سابقة: ${S.q[u]}/3</p>`:""}`;m.innerHTML=h;
+$("#sq").onclick=()=>{let s=0;Q[u].forEach((q,a)=>{const ls=m.querySelectorAll(`input[name=q${a}]`);ls.forEach((r,b)=>{const lb=r.parentElement;lb.className="";if(b==q[2])lb.className="ok";else if(r.checked)lb.className="no"});if(m.querySelector(`input[name=q${a}]:checked`)?.value==q[2])s++});
+$("#rs").textContent="النتيجة: "+s+" / 3";S.q[u]=Math.max(S.q[u]||0,s);sv();prog();nav()}}
+theme();prog();go(Math.min(S.c,I.length-1));
+</script>
+</body>
+</html>
